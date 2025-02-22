@@ -24,6 +24,7 @@ export class MoviesService {
 
   constructor() {
     this.getMovies();
+    this.getTrending();
   }
 
   // TODO: Implement interceptor to handle API key
@@ -35,15 +36,36 @@ export class MoviesService {
     this._http
       .get<MovieResponse>(`${this.apiUrl}/movie/popular?api_key=${this.apiKey}`)
       .pipe(
-        tap((response) => {
+        tap((movies: MovieResponse) => {
           const currentMovies = this.movies();
-          this.movies.set([...currentMovies, ...response.results]);
-          this.hasMorePages.set(response.page < response.total_pages);
+          this.movies.set([...currentMovies, ...movies.results]);
+          this.hasMorePages.set(movies.page < movies.total_pages);
           this.currentPage.update((currentPage) => currentPage + 1);
           this.isLoading.set(false);
         })
       )
       .subscribe();
+  }
+
+  getTrending(): void {
+    this._http
+      .get<MovieResponse>(`${this.apiUrl}/trending/movie/day?api_key=${this.apiKey}`)
+      .pipe(
+        tap((movies: MovieResponse) => this.trendingMovies.set(movies.results)),
+        tap(() => this.setRandomMovie())
+      )
+      .subscribe();
+  }
+
+  setRandomMovie(): void {
+    const trandingLength = this.trendingMovies().length;
+    const randomIndex = this._getRandomInt(0, trandingLength);
+    const randomMovie = this.trendingMovies()[randomIndex];
+    this.selectedMovie.set(randomMovie);
+  }
+
+  private _getRandomInt(min = 0, max = 50): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
 }
