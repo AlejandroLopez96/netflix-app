@@ -28,8 +28,8 @@ export class MoviesService {
   }
 
   // TODO: Implement interceptor to handle API key
-  getMovieId(movieId: number): Observable<MovieResponse> {
-    return this._http.get<MovieResponse>(`${this.apiUrl}/movie/${movieId}?api_key=${this.apiKey}`);
+  getMovieId(movieId: string): Observable<Movie> {
+    return this._http.get<Movie>(`${this.apiUrl}/movie/${movieId}?api_key=${this.apiKey}`);
   }
 
   getMovies(): void {
