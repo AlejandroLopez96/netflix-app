@@ -1,5 +1,5 @@
 # NetflixApp
-Netflix app with Angular 19 and TheMovieDb api
+Netflix app with Angular 19, Tailwind CSS and TheMovieDb api
 
 
 - Header with searcher
