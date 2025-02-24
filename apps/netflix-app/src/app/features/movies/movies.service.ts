@@ -18,7 +18,6 @@ export class MoviesService {
 
   private readonly apiKey = '';
   private readonly apiUrl = 'https://api.themoviedb.org/3';
-  // private readonly _searchTerm = signal<string>('');
 
   private readonly _http = inject(HttpClient);
 
@@ -34,7 +33,7 @@ export class MoviesService {
 
   getMovies(): void {
     this._http
-      .get<MovieResponse>(`${this.apiUrl}/movie/popular?api_key=${this.apiKey}`)
+      .get<MovieResponse>(`${this.apiUrl}/movie/popular?api_key=${this.apiKey}&page=${this.currentPage() ?? 1}`)
       .pipe(
         tap((movies: MovieResponse) => {
           const currentMovies = this.movies();

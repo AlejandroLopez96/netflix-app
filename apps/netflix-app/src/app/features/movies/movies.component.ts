@@ -27,7 +27,7 @@ export class MoviesComponent {
     if (this.isLoading() || !this.hasMorePages()) { return; }
 
     const scrollPosition = window.innerHeight + window.scrollY;
-    const scrollThreshold = document.body.offsetHeight;
+    const scrollThreshold = document.body.offsetHeight - 1;
 
     if (scrollPosition >= scrollThreshold) {
       this._moviesService.getMovies();

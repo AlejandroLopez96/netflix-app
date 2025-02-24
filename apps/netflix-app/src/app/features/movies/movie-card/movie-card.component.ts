@@ -1,5 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Movie } from '../models/movies.interface';
+import { ImageService } from '../../../shared/image.service';
 
 @Component({
   selector: 'app-movie-card',
@@ -11,9 +12,10 @@ export class MovieCardComponent {
   movie = input.required<Movie>();
   imageError = false;
 
+  private readonly _imageService = inject(ImageService);
+
   getImgUrl(): string {
-    const baseUrl = 'https://image.tmdb.org/t/p/w500';
-    return this.imageError ? '/placeholder.svg' : `${baseUrl}${this.movie().poster_path}`;
+    return this.imageError ? '/placeholder.svg' : this._imageService.getImageUrl(this.movie().poster_path);
   }
 
   setImageError(value: boolean): void {
