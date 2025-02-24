@@ -2,14 +2,17 @@ import { Component, computed, HostListener, inject } from '@angular/core';
 import { MoviesService } from './movies.service';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { RouterLink } from '@angular/router';
+import { MovieRowComponent } from './movie-row/movie-row.component';
 
 @Component({
   selector: 'app-movies',
-  imports: [RouterLink, MovieCardComponent],
+  imports: [RouterLink, MovieCardComponent, MovieRowComponent],
   templateUrl: './movies.component.html'
 })
 export class MoviesComponent {
 
+  titleMovies = 'Movies';
+  
   isLoading = computed(() => this._moviesService.isLoading());
   hasMorePages = computed(() => this._moviesService.hasMorePages());
 
@@ -17,9 +20,10 @@ export class MoviesComponent {
 
   readonly movies = this._moviesService.movies;
 
+  trendingMovies = computed(() => this._moviesService.trendingMovies());
+
   @HostListener('window:scroll')
   onScroll(): void {
-    // TODO loading hasMorePages
     if (this.isLoading() || !this.hasMorePages()) { return; }
 
     const scrollPosition = window.innerHeight + window.scrollY;
